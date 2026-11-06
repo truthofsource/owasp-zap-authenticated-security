@@ -1,6 +1,6 @@
 # Authenticated Web and API Security with OWASP ZAP
 
-**A sign-in page is not the application. Test the authorized and denied paths behind it.**
+**Check what users can reach after sign-in, including what lower-access accounts must be denied.**
 
 [Business problem](#the-business-problem) · [Solution](#the-solution) · [Strengths](#engineering-strengths) · [Proof](#proof-it-works) · [Commands](docs/COMMANDS.md)
 
@@ -8,13 +8,13 @@
 
 ## The Business Problem
 
-A workforce platform used Microsoft sign-in and role-protected APIs. An anonymous web scan could inspect the public shell yet never reach the routes where staff permissions mattered. Test tokens and response bodies also needed protection from reports.
+A security scan of the sign-in page can miss the application behind it. The platform needed checks of selected staff-only routes and clear proof that an employee account could not use them. Login tokens and private responses also needed to stay out of the reports.
 
 ## The Solution
 
-Use a pinned ZAP image and a fixed passive ten-GET matrix for anonymous, Admin and Caregiver-only identities. Verify exact identity/role before protected probes, refuse redirects/arbitrary routes and summarize only fixed alert metadata.
+Use OWASP ZAP to inspect a small, fixed set of read-only web requests. Confirm the signed-in accounts and roles, compare the expected allowed and denied responses, and report only safe summary information. This test observes traffic without sending active attack requests.
 
-**Business outcome:** Recorded nonproduction acceptance exercised ten GETs across four handlers, with two informational cache observations and no Low/Medium/High alerts in that bounded sample. It was not whole-application clearance.
+**Business outcome:** The recorded test covered ten read-only requests across four server handlers. It found two informational cache observations and no Low, Medium or High alerts in that limited sample; it did not clear the whole application.
 
 ## Engineering Strengths
 
@@ -45,7 +45,7 @@ This project is derived from actual workforce-platform implementation. Identifyi
 | Actual authenticated adapter | Fixed target, private token handling and alert-summary filtering | [Source](scripts/zap_authenticated.py) |
 | Actual role matrix | Four allowlisted handlers and expected actor/status observations | [Source](scripts/zap_role_matrix.py) |
 | Pinned ZAP image | Immutable selected scanner reference | [Pin](security/zap-lock.json) |
-| Actual tests | Reject wrong identity, malformed roles, arbitrary routes and token/report leakage | [Tests](scripts/) |
+| Actual tests | Reject wrong identity, incorrectly structured roles, arbitrary routes and token/report leakage | [Tests](scripts/) |
 | Local demonstration | Exercise actual rule/evaluation code using fictional data | [Demo](scripts/demo.py) |
 | Dated context | Keep recorded implementation separate from new local evidence | [Context](data/history.json) |
 
@@ -58,13 +58,13 @@ python -B -m unittest discover -s scripts -p 'test_*.py' -v
 python -B scripts/demo.py
 ```
 
-**Observed:** Nine original Python contract tests passed. The fictional probe exercises the actual ten-request evaluator. [Validation](docs/VALIDATION.md) records the exact scope and distinguishes pure/mock checks from hosted integration.
+**Observed:** Nine original Python tests of the agreed input and output rules passed. The fictional probe exercises the actual ten-request evaluator. [Validation](docs/VALIDATION.md) records the exact scope and distinguishes pure/mock checks from testing with the hosted services.
 
 ### 2. Inspect the decision output
 
 ![Working reference example](docs/images/02-example.png)
 
-The output is explicitly fictional and exercises the included logic. A successful rule/mock result is not a completed real-world operation. No new hosted scan, token collection or Microsoft sign-in was performed. The public target is deliberately api.workforce.invalid.
+The output is explicitly fictional and exercises the included logic. A successful rule test or simulation is not a completed real-world operation. No new hosted scan, token collection or Microsoft sign-in was performed. The public target is deliberately api.workforce.invalid.
 
 ### 3. Open the reference viewer
 
@@ -87,7 +87,7 @@ The invalid query/person probes are deliberately expected to return specific Adm
 
 ## Operations, Limits and Growth
 
-Keep the target, owning state/identity and evidence boundary explicit. Validate expected failures as well as success; do not let an incomplete result become a green indicator. Preserve private inputs and unrelated changes. Proposed scaling needs measured bottlenecks, cost review, downstream limits and repeated denied/recovery checks. [Operations and scaling](docs/OPERATIONS-AND-SCALING.md).
+State clearly which system is being checked, who owns it and what the result actually proves. Test the cases that should be denied or rejected as well as the successful ones. Keep incomplete results clearly marked. Preserve private inputs and unrelated changes. Before expanding the design, measure what is slow or limited, review costs, and check access restrictions and recovery again. [Operations and scaling](docs/OPERATIONS-AND-SCALING.md).
 
 ## Project Guides
 

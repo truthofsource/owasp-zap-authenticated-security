@@ -7,7 +7,7 @@ python -B -m unittest discover -s scripts -p 'test_*.py' -v
 python -B scripts/demo.py
 ```
 
-Nine original Python contract tests passed. The fictional probe exercises the actual ten-request evaluator.
+Nine original Python tests of the agreed input and output rules passed. The fictional probe exercises the actual ten-request evaluator.
 
 ```bash
 python -B scripts/preview.py --port 8139
