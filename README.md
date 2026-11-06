@@ -20,9 +20,9 @@ Use OWASP ZAP to inspect a small, fixed set of read-only web requests. Confirm t
 
 | Strength | Practical value |
 | --- | --- |
-| **HTTP behavior** | Inspect real requests/responses, including headers and behavior that package/IaC scanners cannot observe. |
-| **Authenticated coverage** | Reach explicitly selected paths after sign-in, then compare authorized and lower-privilege behavior. |
-| **Controlled passive testing** | Observe selected traffic without injecting active attack payloads; combine exact role assertions with safe alert summaries. |
+| **HTTP behavior** | Check how the website and server actually respond, including details that software-package and infrastructure scans cannot see. |
+| **Authenticated coverage** | Check selected pages or server actions after sign-in, then compare allowed users with users who should be denied. |
+| **Controlled passive testing** | Inspect selected web traffic without sending attack requests. Check the expected permissions and publish only safe summaries. |
 
 ## Architecture
 
@@ -44,10 +44,10 @@ This project is derived from actual workforce-platform implementation. Identifyi
 | --- | --- | --- |
 | Actual authenticated adapter | Fixed target, private token handling and alert-summary filtering | [Source](scripts/zap_authenticated.py) |
 | Actual role matrix | Four allowlisted handlers and expected actor/status observations | [Source](scripts/zap_role_matrix.py) |
-| Pinned ZAP image | Immutable selected scanner reference | [Pin](security/zap-lock.json) |
+| Pinned ZAP image | A scanner build identified by its exact fingerprint | [Pin](security/zap-lock.json) |
 | Actual tests | Reject wrong identity, incorrectly structured roles, arbitrary routes and token/report leakage | [Tests](scripts/) |
 | Local demonstration | Exercise actual rule/evaluation code using fictional data | [Demo](scripts/demo.py) |
-| Dated context | Keep recorded implementation separate from new local evidence | [Context](data/history.json) |
+| Dated context | Keep earlier platform results separate from the new local example | [Context](data/history.json) |
 
 ## Proof It Works
 
@@ -97,6 +97,6 @@ State clearly which system is being checked, who owns it and what the result act
 | [Commands](docs/COMMANDS.md) | Local tests, expected output and inspection |
 | [Operations and scaling](docs/OPERATIONS-AND-SCALING.md) | Strengths, weaknesses, costs and growth |
 | [Source map](docs/SOURCE-MAP.md) | Actual files and public adaptations |
-| [Validation](docs/VALIDATION.md) | Observed local evidence and remaining integration scope |
+| [Validation](docs/VALIDATION.md) | What was tested locally and what still needs real-service testing |
 
 No Azure service, business record or live state was changed. The public validation workflow is manual-only and was not dispatched, conserving hosted Actions minutes.
