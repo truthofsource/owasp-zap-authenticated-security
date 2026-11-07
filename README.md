@@ -103,6 +103,10 @@ The invalid query/person probes are deliberately expected to return specific Adm
 
 State clearly which system is being checked, who owns it and what the result actually proves. Test the cases that should be denied or rejected as well as the successful ones. Keep incomplete results clearly marked. Preserve private inputs and unrelated changes. Before expanding the design, measure what is slow or limited, review costs, and check access restrictions and recovery again. [Operations and scaling](docs/OPERATIONS-AND-SCALING.md).
 
+## Troubleshooting Lessons
+
+A PDF helper failure did not necessarily mean the viewer or authorization was broken. The observation code needed correction while the protected-access checks stayed in place. [Read the incident, evidence and verification](docs/LESSONS-LEARNED.md).
+
 ## Project Guides
 
 | Guide | Purpose |
