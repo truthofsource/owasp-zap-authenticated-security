@@ -18,13 +18,24 @@ Use OWASP ZAP to inspect a small, fixed set of read-only web requests. Confirm t
 
 **Business outcome:** The recorded test covered ten read-only requests across four server handlers. It found two informational cache observations and no Low, Medium or High alerts in that limited sample; it did not clear the whole application.
 
+## Tools Used and What They Do
+
+| Tool or service | What it does | Where it fits |
+| --- | --- | --- |
+| OWASP ZAP | Observe the selected web/API requests for runtime security issues. | Actual DAST tool; passive, active and authenticated modes have different scopes. |
+| Playwright and Chromium | Prepare/check browser sessions and protected viewer behavior. | Platform acceptance tooling; the local viewer does not sign into Entra. |
+| Microsoft Entra ID | Supply the Admin and Caregiver identities compared in access checks. | Actual authentication boundary; no credentials or reusable sessions are included. |
+| Python and GitHub Actions | Exercise the bounded request/report contract with fictional responses. | Public validation is local/manual-only, not a live authenticated scan. |
+
+This retained tool project remains linked from the combined security-scanning portfolio entry. Historical scanner results keep their original target, date and coverage limits.
+
 ## Step by Step
 
 A short walkthrough of the process, with technical instructions and evidence limits in the sections below.
 
-1. **Prepare the approved test accounts** — Use authorized users with different access levels for the selected test. Keep their sign-in information and private responses out of public reports.
+1. **Prepare the approved test accounts (Entra test identities)** — Use authorized users with different access levels for the selected test. Keep their sign-in information and private responses out of public reports.
 
-2. **Send the selected requests** — The test sends a fixed set of read-only website and server requests through ZAP. This setup observes the traffic without sending active attack requests.
+2. **Send the selected requests (OWASP ZAP)** — The test sends a fixed set of read-only website and server requests through ZAP. This setup observes the traffic without sending active attack requests.
 
 3. **Compare allowed and denied access** — Check whether each account receives the expected response. A lower-access user must not gain permission merely because the page is reachable.
 
