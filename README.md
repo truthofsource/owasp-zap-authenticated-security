@@ -4,7 +4,7 @@
 
 **Check what users can reach after sign-in, including what lower-access accounts must be denied.**
 
-[Business problem](#the-business-problem) · [Solution](#the-solution) · [Strengths](#engineering-strengths) · [Proof](#proof-it-works) · [Commands](docs/COMMANDS.md)
+[Business problem](#the-business-problem) · [Solution](#the-solution) · [Strengths](#engineering-strengths) · [Proof](#proof-it-works) · [Commands](docs/COMMANDS.md) · [Step by step](#step-by-step)
 
 ![Local implementation reference](docs/images/01-overview.png)
 
@@ -17,6 +17,18 @@ A security scan of the sign-in page can miss the application behind it. The plat
 Use OWASP ZAP to inspect a small, fixed set of read-only web requests. Confirm the signed-in accounts and roles, compare the expected allowed and denied responses, and report only safe summary information. This test observes traffic without sending active attack requests.
 
 **Business outcome:** The recorded test covered ten read-only requests across four server handlers. It found two informational cache observations and no Low, Medium or High alerts in that limited sample; it did not clear the whole application.
+
+## Step by Step
+
+A short walkthrough of the process, with technical instructions and evidence limits in the sections below.
+
+1. **Prepare the approved test accounts** — Use authorized users with different access levels for the selected test. Keep their sign-in information and private responses out of public reports.
+
+2. **Send the selected requests** — The test sends a fixed set of read-only website and server requests through ZAP. This setup observes the traffic without sending active attack requests.
+
+3. **Compare allowed and denied access** — Check whether each account receives the expected response. A lower-access user must not gain permission merely because the page is reachable.
+
+4. **Review the limited results** — Save safe summary information and investigate unexpected behavior. The recorded sample does not establish security coverage for every page or action.
 
 ## Engineering Strengths
 
