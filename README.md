@@ -10,7 +10,11 @@
 
 ## The Business Problem
 
-A security scan of the sign-in page can miss the application behind it. The platform needed checks of selected staff-only routes and clear proof that an employee account could not use them. Login tokens and private responses also needed to stay out of the reports.
+Different people use the same platform for different work: caregivers submit their records, while HR and administrators review protected employee information. A scan that reaches only the public sign-in page cannot show whether those boundaries still hold after a user signs in.
+
+A page that hides a staff button may still leave its server route reachable by another role. Testing that behavior against sensitive records or using write actions can create operational risk, and saved access tokens or private responses can make a security report sensitive in its own right.
+
+The business need was a controlled way to observe selected signed-in requests, confirm expected access and denials and retain useful findings without exposing employee information or changing business records.
 
 ## The Solution
 
